@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser(description='Generate BEM+Stylus files and stru
 parser.add_argument('--b', nargs=1, required=False, help="The name of block to generate.")
 parser.add_argument('--e', nargs=1, required=False, help="The name of element to generate.")
 parser.add_argument('--m', nargs=1, required=False, help="The name of modifier to generate.")
+parser.add_argument('--u', nargs=1, required=False, help="The name of utility to generate.")
 parser.add_argument('--em', nargs=2, required=False, help="The name of element - modifier to generate.")
 parser.add_argument('--i', action='store_true', required=False, help="Install the BEM stylus helper mixins.")
 args = parser.parse_args()
@@ -30,6 +31,34 @@ if args.i:
     os.write(wfd, content)
     os.close(wfd)
 
+if args.u:
+    if os.path.exists('app.util') == False:
+        os.makedirs('app.util')
+
+    utility = args.u[0]
+
+    rfd = os.open(myDir + 'utility.styl', os.O_RDONLY)
+    content = os.read(rfd, 10000);
+    content = content.replace('%UTILITY%', utility)
+    os.close(rfd)
+    wfd = os.open('app.util/' + utility + '.styl', os.O_CREAT | os.O_WRONLY)
+    os.write(wfd, content)
+    os.close(wfd)
+
+    if os.path.exists('app.util/index.styl') == False:
+        wfd = os.open('app.util/index.styl', os.O_CREAT | os.O_WRONLY)
+        os.write(wfd, '@require "' + utility + '"\n')
+        os.close(wfd)
+    else:
+        wfd = os.open('app.util/index.styl', os.O_APPEND | os.O_WRONLY)
+        os.write(wfd, '@require "' + utility + '"\n')
+        os.close(wfd)
+
+    if os.path.exists('index.styl') == False:
+        wfd = os.open('index.styl', os.O_CREAT | os.O_WRONLY)
+        os.write(wfd, '@require "app.util"\n')
+        os.close(wfd)
+
 if args.b:
     block = args.b[0].capitalize()
     if os.path.exists(block.lower() + '.block'):
@@ -37,7 +66,14 @@ if args.b:
         exit()
     else:
         os.makedirs(block.lower() + '.block/elements')
+        wfd = os.open(block.lower() + '.block/elements/index.styl', os.O_CREAT | os.O_WRONLY)
+        os.write(wfd, '')
+        os.close(wfd)
+
         os.makedirs(block.lower() + '.block/modifiers')
+        wfd = os.open(block.lower() + '.block/modifiers/index.styl', os.O_CREAT | os.O_WRONLY)
+        os.write(wfd, '')
+        os.close(wfd)
 
         rfd = os.open(myDir + 'blockindex.styl', os.O_RDONLY)
         content = os.read(rfd, 10000);
@@ -54,6 +90,15 @@ if args.b:
         wfd = os.open(block.lower() + '.block/' + block.lower() + '.styl', os.O_CREAT | os.O_WRONLY)
         os.write(wfd, content)
         os.close(wfd)
+
+        if os.path.exists('index.styl') == False:
+            wfd = os.open('index.styl', os.O_CREAT | os.O_WRONLY)
+            os.write(wfd, '@require "' + block.lower() + '.block' + '"\n')
+            os.close(wfd)
+        else:
+            wfd = os.open('index.styl', os.O_APPEND | os.O_WRONLY)
+            os.write(wfd, '@require "' + block.lower() + '.block' + '"\n')
+            os.close(wfd)
 
 if args.e:
     element = args.e[0]
