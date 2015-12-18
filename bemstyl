@@ -31,6 +31,11 @@ if args.i:
     os.write(wfd, content)
     os.close(wfd)
 
+    if os.path.exists('index.styl') == False:
+        wfd = os.open('index.styl', os.O_CREAT | os.O_WRONLY)
+        os.write(wfd, '@require "bem.util"\n')
+        os.close(wfd)
+
 if args.u:
     if os.path.exists('app.util') == False:
         os.makedirs('app.util')
