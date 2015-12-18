@@ -11,14 +11,30 @@ parser.add_argument('--b', nargs=1, required=False, help="The name of block to g
 parser.add_argument('--e', nargs=1, required=False, help="The name of element to generate.")
 parser.add_argument('--m', nargs=1, required=False, help="The name of modifier to generate.")
 parser.add_argument('--em', nargs=2, required=False, help="The name of element - modifier to generate.")
+parser.add_argument('--i', required=False, help="Install the BEM stylus helper mixins.")
 args = parser.parse_args()
 
 myDir = os.path.dirname(os.path.realpath(__file__)) + '/'
 
+if args.i:
+    if os.path.exists('bem.util'):
+        print 'Helpers already exist!'
+        exit()
+    else:
+        os.makedirs('bem.util')
+
+    rfd = os.open(myDir + 'bem.styl', os.O_RDONLY)
+    content = os.read(rfd, 10000);
+    os.close(rfd)
+    wfd = os.open('bem.util/bem.styl', os.O_CREAT | os.O_WRONLY)
+    os.write(wfd, content)
+    os.close(wfd)
+
 if args.b:
     block = args.b[0].capitalize()
     if os.path.exists(block.lower() + '.block'):
-        print 'Exists!'
+        print 'Block already exists!'
+        exit()
     else:
         os.makedirs(block.lower() + '.block/__')
         os.makedirs(block.lower() + '.block/--')
