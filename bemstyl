@@ -36,8 +36,8 @@ if args.b:
         print 'Block already exists!'
         exit()
     else:
-        os.makedirs(block.lower() + '.block/__')
-        os.makedirs(block.lower() + '.block/--')
+        os.makedirs(block.lower() + '.block/elements')
+        os.makedirs(block.lower() + '.block/modifiers')
 
         rfd = os.open(myDir + 'blockindex.styl', os.O_RDONLY)
         content = os.read(rfd, 10000);
@@ -60,12 +60,12 @@ if args.e:
     cwd = os.getcwd()
     block = re.search(p, cwd).group(1).capitalize()
 
-    if os.path.exists('__/index.styl') == False:
-        wfd = os.open('__/index.styl', os.O_CREAT | os.O_WRONLY)
+    if os.path.exists('elements/index.styl') == False:
+        wfd = os.open('elements/index.styl', os.O_CREAT | os.O_WRONLY)
         os.write(wfd, '@require "' + element + '"\n')
         os.close(wfd)
     else:
-        wfd = os.open('__/index.styl', os.O_APPEND | os.O_WRONLY)
+        wfd = os.open('elements/index.styl', os.O_APPEND | os.O_WRONLY)
         os.write(wfd, '@require "' + element + '"\n')
         os.close(wfd)
 
@@ -74,7 +74,7 @@ if args.e:
     content = content.replace('%BLOCK%', block)
     content = content.replace('%ELEMENT%', element)
     os.close(rfd)
-    wfd = os.open('__/' + element + '.styl', os.O_CREAT | os.O_WRONLY)
+    wfd = os.open('elements/' + element + '.styl', os.O_CREAT | os.O_WRONLY)
     os.write(wfd, content)
     os.close(wfd)
 
@@ -83,12 +83,12 @@ if args.m:
     cwd = os.getcwd()
     block = re.search(p, cwd).group(1).capitalize()
 
-    if os.path.exists('--/index.styl') == False:
-        wfd = os.open('--/index.styl', os.O_CREAT | os.O_WRONLY)
+    if os.path.exists('modifiers/index.styl') == False:
+        wfd = os.open('modifiers/index.styl', os.O_CREAT | os.O_WRONLY)
         os.write(wfd, '@require "' + modifier + '"\n')
         os.close(wfd)
     else:
-        wfd = os.open('--/index.styl', os.O_APPEND | os.O_WRONLY)
+        wfd = os.open('modifiers/index.styl', os.O_APPEND | os.O_WRONLY)
         os.write(wfd, '@require "' + modifier + '"\n')
         os.close(wfd)
 
@@ -97,7 +97,7 @@ if args.m:
     content = content.replace('%BLOCK%', block)
     content = content.replace('%MODIFIER%', modifier)
     os.close(rfd)
-    wfd = os.open('--/' + modifier + '.styl', os.O_CREAT | os.O_WRONLY)
+    wfd = os.open('modifiers/' + modifier + '.styl', os.O_CREAT | os.O_WRONLY)
     os.write(wfd, content)
     os.close(wfd)
 
@@ -107,12 +107,12 @@ if args.em:
     cwd = os.getcwd()
     block = re.search(p, cwd).group(1).capitalize()
 
-    if os.path.exists('--/index.styl') == False:
-        wfd = os.open('--/index.styl', os.O_CREAT | os.O_WRONLY)
+    if os.path.exists('modifiers/index.styl') == False:
+        wfd = os.open('modifiers/index.styl', os.O_CREAT | os.O_WRONLY)
         os.write(wfd, '@require "' + element + '-' + modifier + '"\n')
         os.close(wfd)
     else:
-        wfd = os.open('--/index.styl', os.O_APPEND | os.O_WRONLY)
+        wfd = os.open('modifiers/index.styl', os.O_APPEND | os.O_WRONLY)
         os.write(wfd, '@require "' + element + '-' + modifier + '"\n')
         os.close(wfd)
 
@@ -122,6 +122,6 @@ if args.em:
     content = content.replace('%ELEMENT%', element)
     content = content.replace('%MODIFIER%', modifier)
     os.close(rfd)
-    wfd = os.open('--/' + element + '-' + modifier + '.styl', os.O_CREAT | os.O_WRONLY)
+    wfd = os.open('modifiers/' + element + '-' + modifier + '.styl', os.O_CREAT | os.O_WRONLY)
     os.write(wfd, content)
     os.close(wfd)
