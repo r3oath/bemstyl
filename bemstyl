@@ -54,11 +54,6 @@ if args.u:
         os.write(wfd, '@require "' + utility + '"\n')
         os.close(wfd)
 
-    if os.path.exists('index.styl') == False:
-        wfd = os.open('index.styl', os.O_CREAT | os.O_WRONLY)
-        os.write(wfd, '@require "app.util"\n')
-        os.close(wfd)
-
 if args.b:
     block = args.b[0].capitalize()
     if os.path.exists(block.lower() + '.block'):
