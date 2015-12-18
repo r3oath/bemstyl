@@ -26,7 +26,7 @@ if args.i:
     rfd = os.open(myDir + 'bem.styl', os.O_RDONLY)
     content = os.read(rfd, 10000);
     os.close(rfd)
-    wfd = os.open('bem.util/bem.styl', os.O_CREAT | os.O_WRONLY)
+    wfd = os.open('bem.util/index.styl', os.O_CREAT | os.O_WRONLY)
     os.write(wfd, content)
     os.close(wfd)
 
