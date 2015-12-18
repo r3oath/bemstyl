@@ -1,0 +1,15 @@
+has(element)
+    &__{element}
+        {block}
+
+style(modifier)
+    &--{modifier}
+        {block}
+
+adapt(element, modifier)
+    &{modifier} &{element}
+        {block}
+
+u(name)
+    .util-{name}
+        {block}
