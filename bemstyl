@@ -11,7 +11,7 @@ parser.add_argument('--b', nargs=1, required=False, help="The name of block to g
 parser.add_argument('--e', nargs=1, required=False, help="The name of element to generate.")
 parser.add_argument('--m', nargs=1, required=False, help="The name of modifier to generate.")
 parser.add_argument('--em', nargs=2, required=False, help="The name of element - modifier to generate.")
-parser.add_argument('--i', required=False, help="Install the BEM stylus helper mixins.")
+parser.add_argument('--i', action='store_true', required=False, help="Install the BEM stylus helper mixins.")
 args = parser.parse_args()
 
 myDir = os.path.dirname(os.path.realpath(__file__)) + '/'
